@@ -32,5 +32,8 @@
       "language": "javascriptreact",
       "autoFix": true
     }
-  ]
+  ],
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false
 }

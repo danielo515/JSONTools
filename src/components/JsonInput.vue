@@ -24,7 +24,7 @@ export default {
       try {
         const parsed = JSON.parse(this.area);
         this.error = false;
-        console.log(parsed);
+        this.$store.dispatch('setJsonInput', parsed);
       }
       catch (err) {
         this.error = true;
