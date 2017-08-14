@@ -4,8 +4,8 @@
     <q-toolbar slot="header">
 
       <!-- <q-tabs slot="navigation">
-            <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
-          </q-tabs> -->
+                <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
+              </q-tabs> -->
       <q-btn flat outline @click="openTab('extract')">
         <q-icon name="menu" />
       </q-btn>
@@ -16,18 +16,25 @@
     </q-toolbar>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1 no-shadow">
-      <q-item>
+      <q-card flat>
+        <!-- <q-card-title>
+            Card Title
+          </q-card-title>
+          <q-card-separator /> -->
+        <q-card-main>
+          <router-view></router-view>
+        </q-card-main>
+      </q-card>
 
-        <router-view></router-view>
-      </q-item>
     </q-scroll-area>
 
-    <div class="row">
-      <div class="col">
-
+    <div class="row panels">
+      <div class="col-6">
         <JsonInput></JsonInput>
       </div>
-      <div class="col"></div>
+      <div class="col">
+        <JsonOutput></JsonOutput>
+      </div>
     </div>
 
   </q-layout>
@@ -44,14 +51,19 @@ import {
   QTabs,
   QRouteTab,
   QItem,
+  QCard,
+  QCardMain,
+  QCardTitle,
   QScrollArea
 } from 'quasar'
 
 import JsonInput from 'components/JsonInput'
+import JsonOutput from 'components/JsonOutput'
 
 export default {
   components: {
     JsonInput,
+    JsonOutput,
     QLayout,
     QToolbar,
     QToolbarTitle,
@@ -60,16 +72,19 @@ export default {
     QTabs,
     QRouteTab,
     QItem,
+    QCard,
+    QCardMain,
+    QCardTitle,
     QScrollArea
   },
-  data() {
+  data () {
     return {
       currentTab: ''
     }
   },
   methods: {
 
-    openTab(name) {
+    openTab (name) {
       const layout = this.$refs.layout;
       if (name === this.currentTab) {
         return layout.toggleLeft();
@@ -85,4 +100,6 @@ export default {
 
 <style  lang="stylus">
   @import '~variables'
+  .panels
+    height 100vh
 </style>

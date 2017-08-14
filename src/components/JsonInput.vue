@@ -1,40 +1,79 @@
 <template>
-  <div>
-    <q-input v-model="area" :error="error" @blur="parse" type="textarea" float-label="Textarea" :max-height="200" :min-rows="7" />
+  <div class="jsonInput">
+    <!-- <q-input
+      v-model.lazy="area"
+      :error="error"
+      @blur="parse"
+      type="textarea"
+      float-label="Textarea"
+      :max-height="300"
+      :min-rows="7" /> -->
+      <codemirror @blur="blur" :options="editorOptions"></codemirror>
   </div>
 </template>
 
 <script>
-import {
-  QInput
-} from 'quasar'
+// import {
+//   // QInput
+//   debounce
+// } from 'quasar'
+
+import { codemirror } from 'vue-codemirror'
+
+const asyncParse = (str) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const parsed = JSON.parse(str);
+      resolve(parsed);
+    }
+    catch (err) {
+      reject(err);
+    }
+  });
+}
 
 export default {
   components: {
-    QInput
+    codemirror
   },
   data () {
     return {
       area: '',
-      error: false
+      error: false,
+      editorOptions: {
+        // codemirror options
+        tabSize: 2,
+        lineNumbers: true,
+        line: true,
+        undoDepth: 100,
+        dragDrop: false,
+        pollInterval: 200
+      }
     }
   },
   methods: {
-    parse () {
-      try {
-        const parsed = JSON.parse(this.area);
-        this.error = false;
-        this.$store.dispatch('setJsonInput', parsed);
-      }
-      catch (err) {
-        this.error = true;
-        console.error(err);
-      }
+    blur(evt) {
+      this.parse(evt.doc.getValue())
+    },
+    parse (text) {
+      asyncParse(text)
+        .then((parsed) => {
+          this.error = false;
+          this.$store.dispatch('setJsonInput', parsed);
+        })
+        .catch((err) => {
+          this.error = true;
+          console.error(err);
+        })
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="stylus">
+  .CodeMirror
+    height 100%
+    width 100%
+  .jsonInput
+    height 100%
 </style>

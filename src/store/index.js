@@ -41,7 +41,7 @@ export default new Vuex.Store({
       space: 2
     },
     jsonInput: [{}],
-    jsonOutput: [{}],
+    jsonOutput: '',
     keys: []
   }
 });
