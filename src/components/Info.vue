@@ -7,11 +7,20 @@
     <q-list >
       <q-item>
         <q-item-side>
-          <q-item-tile color="primary" icon="local bar" />
+          <q-item-tile color="primary" icon="code" />
         </q-item-side>
         <q-item-main>
           <q-item-tile label>Type</q-item-tile>
           <q-item-tile sublabel>{{meta.type}}</q-item-tile>
+        </q-item-main>
+      </q-item>
+      <q-item>
+        <q-item-side>
+          <q-item-tile color="secondary" icon="format list numbered" />
+        </q-item-side>
+        <q-item-main>
+          <q-item-tile label>Num. of elements</q-item-tile>
+          <q-item-tile sublabel>{{meta.elements}}</q-item-tile>
         </q-item-main>
       </q-item>
     </q-list>

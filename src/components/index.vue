@@ -14,7 +14,7 @@
         <q-icon name="menu" />
       </q-btn>
       <q-btn flat outline @click="openTab('info')">
-        <q-icon name="alarm" />
+        <q-icon name="info" />
       </q-btn>
 
     </q-toolbar>
