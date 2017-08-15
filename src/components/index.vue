@@ -1,6 +1,10 @@
 <template>
   <!-- Configure "view" prop for QLayout -->
-  <q-layout ref="layout">
+  <q-layout
+    ref="layout"
+    view="hHh Lpr fFf"
+    :left-class="{'no-shadow': true}"
+    >
     <q-toolbar slot="header">
 
       <!-- <q-tabs slot="navigation">
@@ -9,7 +13,7 @@
       <q-btn flat outline @click="openTab('extract')">
         <q-icon name="menu" />
       </q-btn>
-      <q-btn flat outline @click="openTab('alarm')">
+      <q-btn flat outline @click="openTab('info')">
         <q-icon name="alarm" />
       </q-btn>
 
@@ -28,7 +32,7 @@
 
     </q-scroll-area>
 
-    <div class="row panels">
+    <div class="row panels" :style="computedMainStyle">
       <div class="col-6">
         <JsonInput></JsonInput>
       </div>
@@ -54,9 +58,11 @@ import {
   QCard,
   QCardMain,
   QCardTitle,
-  QScrollArea
+  QScrollArea,
+  dom
 } from 'quasar'
 
+const {style} = dom;
 import JsonInput from 'components/JsonInput'
 import JsonOutput from 'components/JsonOutput'
 
@@ -79,11 +85,20 @@ export default {
   },
   data () {
     return {
-      currentTab: ''
+      currentTab: '',
+      header: {h: '0px', w: 0}
+    }
+  },
+  mounted () {
+    console.log(this.$refs.layout);
+    this.header.h = style(this.$refs.layout.$refs.header, 'height')
+  },
+  computed: {
+    computedMainStyle() {
+      return { height: `calc( 100vh - ${this.header.h} )` };
     }
   },
   methods: {
-
     openTab (name) {
       const layout = this.$refs.layout;
       if (name === this.currentTab) {
@@ -100,6 +115,4 @@ export default {
 
 <style  lang="stylus">
   @import '~variables'
-  .panels
-    height 100vh
 </style>

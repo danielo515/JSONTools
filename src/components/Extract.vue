@@ -3,6 +3,8 @@
     <q-select
       v-model="select"
       float-label="Keys to include"
+      multiple
+      chips
      :options="keys"
     />
     <q-btn icon="create" @click="extract">Extract fields</q-btn>
@@ -37,7 +39,7 @@ export default {
   },
   data () {
     return {
-      select: ''
+      select: []
     }
   }
 }

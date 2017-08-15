@@ -1,21 +1,13 @@
 <template>
   <div class="jsonInput">
-    <!-- <q-input
-      v-model.lazy="area"
-      :error="error"
-      @blur="parse"
-      type="textarea"
-      float-label="Textarea"
-      :max-height="300"
-      :min-rows="7" /> -->
+      <span :class="error ? 'has-error' : ''"></span>
       <codemirror @blur="blur" :options="editorOptions"></codemirror>
   </div>
 </template>
 
 <script>
 // import {
-//   // QInput
-//   debounce
+//   QField
 // } from 'quasar'
 
 import { codemirror } from 'vue-codemirror'
@@ -35,6 +27,7 @@ const asyncParse = (str) => {
 export default {
   components: {
     codemirror
+    // QField
   },
   data () {
     return {
@@ -56,6 +49,9 @@ export default {
       this.parse(evt.doc.getValue())
     },
     parse (text) {
+      if (!text) {
+        return;
+      }
       asyncParse(text)
         .then((parsed) => {
           this.error = false;

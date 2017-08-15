@@ -26,7 +26,8 @@ export default new VueRouter({
       path: '/',
       component: load('index'),
       children: [
-        {path: '/extract', component: load('Extract')}
+        {path: '/extract', component: load('Extract')},
+        {path: '/info', component: load('Info')}
       ]
     },
 
