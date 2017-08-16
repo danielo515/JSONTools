@@ -12,6 +12,7 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Quasar from 'quasar'
+import 'quasar-extras/fontawesome'
 import router from './router'
 import store from './store'
 

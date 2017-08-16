@@ -10,21 +10,24 @@
       <!-- <q-tabs slot="navigation">
                 <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
               </q-tabs> -->
-      <q-btn flat outline @click="openTab('extract')">
-        <q-icon name="menu" />
+      <q-btn flat @click="openTab('extract')">
+        <q-icon name="content cut" />
       </q-btn>
-      <q-btn flat outline @click="openTab('info')">
+      <q-btn flat @click="openTab('info')">
         <q-icon name="info" />
+      </q-btn>
+      <q-btn flat @click="openTab('filter')">
+        <q-icon name="fa-filter" />
       </q-btn>
 
     </q-toolbar>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1 no-shadow">
       <q-card flat>
-        <!-- <q-card-title>
-            Card Title
+        <q-card-title>
+            {{tabName}}
           </q-card-title>
-          <q-card-separator /> -->
+          <q-card-separator />
         <q-card-main>
           <router-view></router-view>
         </q-card-main>
@@ -58,9 +61,13 @@ import {
   QCard,
   QCardMain,
   QCardTitle,
+  QCardSeparator,
   QScrollArea,
-  dom
+  dom,
+  format
 } from 'quasar'
+
+const {capitalize} = format;
 
 const {style} = dom;
 import JsonInput from 'components/JsonInput'
@@ -81,6 +88,7 @@ export default {
     QCard,
     QCardMain,
     QCardTitle,
+    QCardSeparator,
     QScrollArea
   },
   data () {
@@ -90,10 +98,12 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$refs.layout);
     this.header.h = style(this.$refs.layout.$refs.header, 'height')
   },
   computed: {
+    tabName() {
+      return capitalize(this.currentTab || this.$route.path.substring(1));
+    },
     computedMainStyle() {
       return { height: `calc( 100vh - ${this.header.h} )` };
     }
