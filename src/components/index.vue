@@ -10,16 +10,9 @@
       <!-- <q-tabs slot="navigation">
                 <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
               </q-tabs> -->
-      <q-btn flat @click="openTab('extract')">
-        <q-icon name="content cut" />
+      <q-btn v-for="plugin in plugins" :key="plugin.name" @click="openTab(plugin.name)" flat>
+        <q-icon :name="plugin.icon" />
       </q-btn>
-      <q-btn flat @click="openTab('info')">
-        <q-icon name="info" />
-      </q-btn>
-      <q-btn flat @click="openTab('filter')">
-        <q-icon name="fa-filter" />
-      </q-btn>
-
     </q-toolbar>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1 no-shadow">
@@ -94,7 +87,8 @@ export default {
   data () {
     return {
       currentTab: '',
-      header: {h: '0px', w: 0}
+      header: { h: '0px' },
+      plugins: require('../plugins').default
     }
   },
   mounted () {

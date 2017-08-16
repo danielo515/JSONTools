@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import plugins from './plugins'
 
 Vue.use(VueRouter)
 
@@ -25,11 +26,7 @@ export default new VueRouter({
     {
       path: '/',
       component: load('index'),
-      children: [
-        {path: '/extract', component: load('Extract')},
-        {path: '/info', component: load('Info')},
-        {path: '/filter', component: load('Filter')}
-      ]
+      children: plugins
     },
 
     // Always leave this last one
