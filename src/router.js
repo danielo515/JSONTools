@@ -30,6 +30,6 @@ export default new VueRouter({
     },
 
     // Always leave this last one
-    { path: '*', component: load('Error404') } // Not found
+    { path: '*', component: require('@/Error404.vue') } // Not found
   ]
 })
