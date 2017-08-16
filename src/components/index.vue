@@ -119,4 +119,8 @@ export default {
 
 <style  lang="stylus">
   @import '~variables'
+  .panels
+    .CodeMirror
+      height 100%
+      width 100%
 </style>

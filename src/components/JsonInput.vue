@@ -67,9 +67,6 @@ export default {
 </script>
 
 <style lang="stylus">
-  .CodeMirror
-    height 100%
-    width 100%
   .jsonInput
     height 100%
 </style>
