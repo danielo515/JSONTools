@@ -15,6 +15,9 @@
       ".jsx"
     ]
   },
+  "emmet.syntaxProfiles": {
+  "vue-html": "html"
+},
   "eslint.validate": [
     {
       "language": "html",

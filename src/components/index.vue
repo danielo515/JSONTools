@@ -4,6 +4,7 @@
     ref="layout"
     view="hHh Lpr fFf"
     :left-class="{'no-shadow': true}"
+    :header-class="{'no-shadow': true}"
     >
     <q-toolbar slot="header">
 
@@ -15,7 +16,7 @@
       </q-btn>
     </q-toolbar>
 
-    <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1 no-shadow">
+    <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1">
       <q-card flat>
         <q-card-title>
             {{tabName}}

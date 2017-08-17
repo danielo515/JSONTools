@@ -55,6 +55,7 @@ export default {
       asyncParse(text)
         .then((parsed) => {
           this.error = false;
+          parsed = Array.isArray(parsed) ? parsed : [parsed];
           this.$store.dispatch('setJsonInput', parsed);
         })
         .catch((err) => {
