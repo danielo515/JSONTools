@@ -1,6 +1,6 @@
 'use strict';
 
-function load (component) {
+function load(component) {
   // '@' is aliased to src/components
   return require(`@/${component}.vue`)
 }
@@ -23,5 +23,11 @@ export default [
     icon: 'fa-filter',
     path: '/filter',
     component: load('Filter')
+  },
+  {
+    name: 'format',
+    icon: 'format align center',
+    path: '/format',
+    component: load('Format')
   }
 ];

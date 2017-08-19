@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {listAllKeys, uniques, has} from '../utils';
+import {listAllKeys, uniques, has, positiveNumber} from '../utils';
 
 Vue.use(Vuex);
 
@@ -40,6 +40,7 @@ export const actions = {
     commit('SET_META', {target: 'output', metadata: getMetadata(obj)});
   },
   setSpacingFormat({commit}, value) {
+    value = Math.min(10, positiveNumber(value));
     commit('SET_CONFIG', {confSection: 'space', value});
   }
 };
