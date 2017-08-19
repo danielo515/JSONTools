@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { listAllKeys, uniques } from '../utils';
+import {listAllKeys, uniques, has} from '../utils';
 
 Vue.use(Vuex);
 
@@ -38,6 +38,9 @@ export const actions = {
   setJsonOutput({commit, state}, obj) {
     commit('SET_JSON_OUTPUT', JSON.stringify(obj, null, state.config.space))
     commit('SET_META', {target: 'output', metadata: getMetadata(obj)});
+  },
+  setSpacingFormat({commit}, value) {
+    commit('SET_CONFIG', {confSection: 'space', value});
   }
 };
 
@@ -51,6 +54,12 @@ const mutations = {
   EXTRACT_KEYS(state) {
     const keys = listAllKeys(state.jsonInput);
     state.keys = keys.filter(uniques);
+  },
+  SET_CONFIG(state, {confSection, value}) {
+    if (!has(confSection)(state.config)) {
+      return console.error('Trying to set a non existing configuration')
+    }
+    state.config[confSection] = value;
   },
   SET_META(state, {target, metadata}) {
     if (!state.metadata.hasOwnProperty(target)) {

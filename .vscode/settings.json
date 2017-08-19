@@ -15,8 +15,7 @@
       ".jsx"
     ]
   },
-  "eslint.validate": [
-    {
+  "eslint.validate": [{
       "language": "html",
       "autoFix": true
     },
@@ -35,5 +34,8 @@
   ],
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
-  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  "emmet.syntaxProfiles": {
+    "vue-html": "html"
+  }
 }
