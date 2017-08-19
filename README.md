@@ -1,6 +1,6 @@
-# Quasar App
+# JSONTools
 
-> A Quasar project
+> A small collection of utilities to operate collections of json objects
 
 ## Build Setup
 
