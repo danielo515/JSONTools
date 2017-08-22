@@ -13,12 +13,6 @@ export default [
     component: load('Extract')
   },
   {
-    name: 'info',
-    icon: 'info',
-    path: '/info',
-    component: load('Info')
-  },
-  {
     name: 'filter',
     icon: 'fa-filter',
     path: '/filter',
@@ -29,5 +23,11 @@ export default [
     icon: 'format align center',
     path: '/format',
     component: load('Format')
+  },
+  {
+    name: 'info',
+    icon: 'info',
+    path: '/info',
+    component: load('Info')
   }
 ];
