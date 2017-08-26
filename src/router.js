@@ -4,7 +4,7 @@ import plugins from './plugins'
 
 Vue.use(VueRouter)
 
-function load (component) {
+function load(component) {
   // '@' is aliased to src/components
   return () => import(`@/${component}.vue`)
 }
@@ -30,6 +30,6 @@ export default new VueRouter({
     },
 
     // Always leave this last one
-    { path: '*', component: require('@/Error404.vue') } // Not found
+    {path: '*', redirect: '/help'} // Not found
   ]
 })

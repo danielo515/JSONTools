@@ -1,7 +1,7 @@
 <template>
-  <div class="jsonInput">
-      <span :class="error ? 'has-error' : ''"></span>
-      <codemirror @blur="blur" :options="editorOptions"></codemirror>
+  <div class="jsonInput" :class="error ? 'has-error' : ''">
+    <div class="error-message" v-if="error" v-html="formatError(errorMessage)"></div>
+    <codemirror @blur="blur" :options="editorOptions"></codemirror>
   </div>
 </template>
 
@@ -10,17 +10,16 @@
 //   QField
 // } from 'quasar'
 
+import { jsonParse } from '../utils';
 import { codemirror } from 'vue-codemirror'
 
 const asyncParse = (str) => {
   return new Promise((resolve, reject) => {
-    try {
-      const parsed = JSON.parse(str);
-      resolve(parsed);
+    const parsed = jsonParse(str)
+    if (parsed instanceof Error) {
+      return reject(parsed);
     }
-    catch (err) {
-      reject(err);
-    }
+    resolve(parsed);
   });
 }
 
@@ -33,6 +32,7 @@ export default {
     return {
       area: '',
       error: false,
+      errorMessage: '',
       editorOptions: {
         // codemirror options
         tabSize: 2,
@@ -45,9 +45,11 @@ export default {
     }
   },
   methods: {
-    blur(evt) {
+    blur (evt) {
       this.parse(evt.doc.getValue())
     },
+    formatError: (str) =>
+      str.startsWith('Unexpected') ? str.replace(/(Unexpected token )(.)/, '$1"<span style="color:red">$2</span>"') : str,
     parse (text) {
       if (!text) {
         return;
@@ -55,12 +57,13 @@ export default {
       asyncParse(text)
         .then((parsed) => {
           this.error = false;
+          this.errorMessage = '';
           parsed = Array.isArray(parsed) ? parsed : [parsed];
           this.$store.dispatch('setJsonInput', parsed);
         })
         .catch((err) => {
           this.error = true;
-          console.error(err);
+          this.errorMessage = err.message;
         })
     }
   }
@@ -68,6 +71,16 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '~variables'
   .jsonInput
     height 100%
+    position relative
+    .error-message
+      width 100%
+      background-color $dimmed-background
+      color white
+      position absolute
+      padding .1em 2em
+      z-index $z-side
+      text-align right
 </style>

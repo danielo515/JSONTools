@@ -1,29 +1,15 @@
 <template>
   <div>
-    <q-select
-      float-label="Operator"
-      v-model="operator"
-     :options="operators"
-    />
+    <q-select float-label="Operator" v-model="operator" :options="operators" />
     <div class="row" v-for="option in options" :key="option.value">
-    <q-select
-      float-label="Filter by"
-      class="col"
-      v-model="option.path"
-     :options="keys"
-    />
-     <q-select
-      float-label="Value"
-      class="col"
-      v-if="!!option.path"
-      v-model="option.value"
-     :options="getValues(option.path)"
-     />
+      <q-select float-label="Filter by" class="col" v-model="option.path" :options="keys" />
+      <q-select float-label="Value" class="col" v-if="!!option.path" v-model="option.value" :options="getValues(option.path)" />
     </div>
-    <q-btn flat @click="addFilter">
-      <q-icon name="add box"/>
+    <q-btn icon="add box" flat small @click="addFilter">
+      Add filter
     </q-btn>
-    <q-btn icon="create" @click="filter">Filter collection</q-btn>
+    <q-btn @click="filter">Filter collection</q-btn>
+    <q-btn @click="dedup">Remove dups</q-btn>
   </div>
 </template>
 
@@ -37,12 +23,12 @@ import {
 
 import { mapState } from 'vuex'
 import Get from 'lodash.get';
-import {uniques} from 'utils';
+import { uniques } from 'utils';
 
 const AND = 'and';
 const OR = 'or';
 
-const makeFilter = ({path, value}) => {
+const makeFilter = ({ path, value }) => {
   return (obj) => {
     return Get(obj, path) === value;
   }
@@ -66,35 +52,39 @@ export default {
     QInput
   },
   computed: {
-    filters() {
+    filters () {
       return this.options.map(makeFilter)
     },
-    filterOperand() {
+    filterOperand () {
       return this.operator === AND ? 'every' : 'some';
     },
     ...mapState({
       keys: state => state.keys.map(simpleOption),
       input: state => state.jsonInput
-    })},
+    })
+  },
   methods: {
-    getValues(key) {
+    getValues (key) {
       return this.input
         .map(i => Get(i, key))
         .filter(uniques)
         .map(simpleOption)
     },
-    addFilter() {
-      this.options.push({path: '', value: ''});
+    addFilter () {
+      this.options.push({ path: '', value: '' });
     },
-    filter() {
+    filter () {
       const filteredCollection = this.input.filter(o => this.filters[this.filterOperand](f => f(o)));
       this.$store.dispatch('setJsonOutput', filteredCollection);
+    },
+    dedup () {
+      this.$store.dispatch('removeDuplicates')
     }
   },
   data () {
     return {
       options: [
-        {path: '', value: ''}
+        { path: '', value: '' }
       ],
       operators: [AND, OR].map(simpleOption),
       operator: AND
@@ -104,4 +94,5 @@ export default {
 </script>
 
 <style>
+
 </style>

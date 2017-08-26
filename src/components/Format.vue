@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-field icon="format align right" label="Spacing" error-label="Must be a number">
-      <q-input prefix="Spacing" type="number" :value="spacing" @blur="spacing = $event.target.value" />
+      <q-input type="number" :value="spacing" @blur="spacing = $event.target.value" />
     </q-field>
     <q-btn @click="expand">Expand</q-btn>
     <q-btn @click="collapse">Collapse</q-btn>
