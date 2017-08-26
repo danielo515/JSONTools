@@ -1,33 +1,55 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {listAllKeys, uniques, has, positiveNumber} from '../utils';
+import {listAllKeys, uniques, has, positiveNumber, objHas, summary, asProp} from '../utils';
 
 Vue.use(Vuex);
 
-const getMetadata = (source) => {
-  let elements, type;
-  if (Array.isArray(source)) {
-    type = 'Array of objects';
-    elements = source.length;
+const getKeysMeta = (keys, collection) => keys
+  .map(k => {
+    const count = collection.filter(objHas(k)).length;
+    return {
+      count,
+      weird: (count !== collection.length),
+      name: k
+    }
   }
-  else
-  if (typeof source === 'object') {
-    type = 'Object';
-    elements = Object.keys(source).length;
-  }
-  else {
-    type = 'Non valid';
-    elements = 'Must be array or object';
-  }
+  );
+// Encapsulates any value in an object at the given prop
 
-  return {elements, type}
-}
+const asTypeProp = asProp('type');
+const asCountProp = asProp('count');
+const asDupProp = asProp('duplicates');
+// This are NOT general purpose functions. They are biased towards our particular scenario
+const getType = x => asTypeProp(Array.isArray(x) ? 'Array of objects' : typeof x === 'object' ? 'Object' : 'Not valid type');
+const getCount = x => asCountProp(Array.isArray(x) ? x.length : typeof x === 'object' ? Object.keys(x) : 'Must be an array or object');
+const isInCol = (item, collection) => collection.some(v => JSON.stringify(v) === item) ? 1 : 0;
+const findDuplicates = collection => asDupProp(collection.reduce((duplicates, current, i) => duplicates + isInCol(JSON.stringify(current), collection.slice(i + 1)), 0))
+const removeDuplicates = collection => collection.filter((val, i) => !isInCol(JSON.stringify(val), collection.slice(i + 1)));
+
+const getMetadata = summary(getType, getCount, findDuplicates);
 
 export const actions = {
-  setJsonInput({commit}, value) {
+  removeDuplicates({commit, state}) {
+    const deduped = removeDuplicates(state.jsonInput)
+    commit('SET_JSON_OUTPUT', deduped);
+    commit('SET_META', {
+      target: 'output',
+      metadata: {
+        ...getMetadata(deduped),
+        keys: []
+      }
+    });
+  },
+  setJsonInput({commit, state}, value) {
     commit('SET_JSON_INPUT', value);
     commit('EXTRACT_KEYS');
-    commit('SET_META', {target: 'input', metadata: getMetadata(value)});
+    commit('SET_META', {
+      target: 'input',
+      metadata: {
+        ...getMetadata(value),
+        keys: getKeysMeta(state.keys, value)
+      }
+    });
   },
   /**
    * Processing components should dispatch this action with the result of their processing of the JSON-input.
@@ -36,8 +58,14 @@ export const actions = {
    * @param {Object} obj Should be an object representing the result of processing the input
    */
   setJsonOutput({commit, state}, obj) {
-    commit('SET_JSON_OUTPUT', JSON.stringify(obj, null, state.config.space))
-    commit('SET_META', {target: 'output', metadata: getMetadata(obj)});
+    commit('SET_JSON_OUTPUT', obj)
+    commit('SET_META', {
+      target: 'output',
+      metadata: {
+        ...getMetadata(obj),
+        keys: []
+      }
+    });
   },
   setSpacingFormat({commit}, value) {
     value = Math.min(10, positiveNumber(value));
@@ -50,7 +78,7 @@ const mutations = {
     state.jsonInput = value;
   },
   SET_JSON_OUTPUT(state, value) {
-    state.jsonOutput = value;
+    state.jsonOutput = JSON.stringify(value, null, state.config.space);
   },
   EXTRACT_KEYS(state) {
     const keys = listAllKeys(state.jsonInput);

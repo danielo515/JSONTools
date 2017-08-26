@@ -1,27 +1,22 @@
 <template>
   <!-- Configure "view" prop for QLayout -->
-  <q-layout
-    ref="layout"
-    view="hHh Lpr fFf"
-    :left-class="{'no-shadow': true}"
-    :header-class="{'no-shadow': true}"
-    >
+  <q-layout ref="layout" view="hHh Lpr fFf" :left-class="{'no-shadow': true}" :header-class="{'no-shadow': true}">
     <q-toolbar slot="header">
 
       <!-- <q-tabs slot="navigation">
-                <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
-              </q-tabs> -->
+                                                <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
+                                              </q-tabs> -->
       <q-btn v-for="plugin in plugins" :key="plugin.name" @click="openTab(plugin.name)" flat>
         <q-icon :name="plugin.icon" />
       </q-btn>
     </q-toolbar>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1">
-      <q-card flat>
+      <q-card flat class="full-width">
         <q-card-title>
-            {{tabName}}
-          </q-card-title>
-          <q-card-separator />
+          {{tabName}}
+        </q-card-title>
+        <q-card-separator />
         <q-card-main>
           <router-view></router-view>
         </q-card-main>
@@ -33,7 +28,7 @@
       <div class="col-6">
         <JsonInput></JsonInput>
       </div>
-      <div class="col">
+      <div class="col-6">
         <JsonOutput></JsonOutput>
       </div>
     </div>
@@ -56,14 +51,15 @@ import {
   QCardMain,
   QCardTitle,
   QCardSeparator,
+  QField,
   QScrollArea,
   dom,
   format
 } from 'quasar'
 
-const {capitalize} = format;
+const { capitalize } = format;
 
-const {style} = dom;
+const { style } = dom;
 import JsonInput from 'components/JsonInput'
 import JsonOutput from 'components/JsonOutput'
 
@@ -83,6 +79,7 @@ export default {
     QCardMain,
     QCardTitle,
     QCardSeparator,
+    QField,
     QScrollArea
   },
   data () {
@@ -96,10 +93,10 @@ export default {
     this.header.h = style(this.$refs.layout.$refs.header, 'height')
   },
   computed: {
-    tabName() {
+    tabName () {
       return capitalize(this.currentTab || this.$route.path.substring(1));
     },
-    computedMainStyle() {
+    computedMainStyle () {
       return { height: `calc( 100vh - ${this.header.h} )` };
     }
   },
@@ -121,6 +118,8 @@ export default {
 <style  lang="stylus">
   @import '~variables'
   .panels
+    .has-error
+      border 1px dashed red
     .CodeMirror
       height 100%
       width 100%
