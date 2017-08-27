@@ -52,7 +52,13 @@ export const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 export const strRemove = (regex) => (str) => str.replace(regex, '$1');
 export const jsonQuotes = (str) => str.replace(/'/g, '"');
 export const cleanMongoDataTypes = strRemove(/\w+\(([^)]+)\)/g);
-const separateObjects = (str) => '[' + str.replace(/\}[^,]*?\{/g, '},{') + ']'
+const separateObjects = (str) => str.replace(/\}[^,]*?\{/g, '},{')
+const makeArray = (str) => {
+  const trimmed = str.trim();
+  const prefix = trimmed.startsWith('[') ? '' : '[';
+  const suffix = trimmed.endsWith(']') ? '' : ']'
+  return prefix + str + suffix
+}
 const quoteWords = (str) => str.replace(/([^"])(\w+)\s*:/g, '$1"$2":')
 // Applies different fixers to a json string until it parses correctly or there are no more fixes
-export const jsonParse = fixIfFails((str) => JSON.parse(str), cleanMongoDataTypes, jsonQuotes, separateObjects, quoteWords);
+export const jsonParse = fixIfFails((str) => JSON.parse(str), cleanMongoDataTypes, jsonQuotes, separateObjects, makeArray, quoteWords);

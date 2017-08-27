@@ -50,6 +50,15 @@ export default [
     ]
   },
   {
+    name: 'config',
+    icon: 'settings',
+    path: '/config',
+    component: load('Config'),
+    features: [
+      'Optional automatic format input (fixing possible errors)'
+    ]
+  },
+  {
     name: 'help',
     icon: 'help',
     path: '/help',

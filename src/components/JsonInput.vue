@@ -1,7 +1,7 @@
 <template>
   <div class="jsonInput" :class="error ? 'has-error' : ''">
     <div class="error-message" v-if="error" v-html="formatError(errorMessage)"></div>
-    <codemirror @blur="blur" :options="editorOptions"></codemirror>
+    <codemirror @blur="blur" :options="editorOptions" :code="area"></codemirror>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   },
   data () {
     return {
-      area: '',
+      /* area: '{Hello:"Objects go here"}', */
       error: false,
       errorMessage: '',
       editorOptions: {
@@ -42,6 +42,12 @@ export default {
         dragDrop: false,
         pollInterval: 200
       }
+    }
+  },
+  computed: {
+    area () {
+      if (this.$store.state.config.automaticFormat) return this.$store.getters.inputText
+      return null;
     }
   },
   methods: {

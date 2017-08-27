@@ -70,6 +70,9 @@ export const actions = {
   setSpacingFormat({commit}, value) {
     value = Math.min(10, positiveNumber(value));
     commit('SET_CONFIG', {confSection: 'space', value});
+  },
+  toggleConfig({commit, state}, configName) {
+    commit('SET_CONFIG', {confSection: configName, value: !(state.config[configName])});
   }
 };
 
@@ -98,19 +101,27 @@ const mutations = {
   }
 };
 
+const getters = {
+  inputText(state) {
+    return JSON.stringify(state.jsonInput, null, state.config.space);
+  }
+};
+
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   actions,
   mutations,
+  getters,
   state: {
     config: {
-      space: 2
+      space: 2,
+      automaticFormat: true
     },
     metadata: {
       input: {},
       output: {}
     },
-    jsonInput: [{}],
+    jsonInput: {},
     jsonOutput: '',
     keys: []
   }
