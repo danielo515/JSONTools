@@ -1,14 +1,15 @@
 <template>
   <!-- Configure "view" prop for QLayout -->
   <q-layout ref="layout" view="hHh Lpr fFf" :left-class="{'no-shadow': true}" :header-class="{'no-shadow': true}">
-    <q-toolbar slot="header">
-
-      <!-- <q-tabs slot="navigation">
-                                                <q-route-tab slot="title" @select="$refs.layout.toggleLeft()" icon="view_quilt" to="/extract" replace hide="icon" label="About" />
-                                              </q-tabs> -->
+    <q-toolbar slot="header" class="float-left">
       <q-btn v-for="plugin in plugins" :key="plugin.name" @click="openTab(plugin.name)" flat>
         <q-icon :name="plugin.icon" />
       </q-btn>
+      <q-toolbar-title>
+      </q-toolbar-title>
+      <a href="https://github.com/danielo515/JSONTools" class="row inline flex-center q-focusable q-hoverable relative-position q-btn-rectangle q-btn-standard q-btn-flat">
+        <q-icon name="fa-github"></q-icon>
+      </a>
     </q-toolbar>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%" class="bg-grey-1">
@@ -52,6 +53,7 @@ import {
   QCardTitle,
   QCardSeparator,
   QField,
+  QSideLink,
   QScrollArea,
   dom,
   format
@@ -80,6 +82,7 @@ export default {
     QCardTitle,
     QCardSeparator,
     QField,
+    QSideLink,
     QScrollArea
   },
   data () {
@@ -115,8 +118,12 @@ export default {
 </script>
 
 
-<style  lang="stylus">
-  @import '~variables'
+<style lang="stylus">
+@import '~variables'
+  .q-toolbar
+    a
+      height 100%
+      color white
   .panels
     .has-error
       border 1px dashed red
