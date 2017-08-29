@@ -26,7 +26,10 @@ export default new VueRouter({
     {
       path: '/',
       component: load('index'),
-      children: plugins
+      children: plugins.concat([{
+        path: '',
+        redirect: '/help'
+      }])
     },
 
     // Always leave this last one
