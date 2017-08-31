@@ -6,9 +6,11 @@
 </template>
 
 <script>
-// import {
-//   QField
-// } from 'quasar'
+// foldGutter
+require('codemirror/addon/fold/foldgutter.css')
+require('codemirror/addon/fold/brace-fold.js')
+require('codemirror/addon/fold/foldgutter.js')
+// require('codemirror/addon/fold/indent-fold.js')
 
 import { jsonParse } from '../utils';
 import { codemirror } from 'vue-codemirror'
@@ -36,11 +38,19 @@ export default {
       editorOptions: {
         // codemirror options
         tabSize: 2,
+        matchBrackets: true,
         lineNumbers: true,
+        foldGutter: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
         line: true,
         undoDepth: 100,
         dragDrop: false,
-        pollInterval: 200
+        pollInterval: 200,
+        mode: {
+          name: 'javascript',
+          json: true
+        },
+        lineWrapping: true
       }
     }
   },
