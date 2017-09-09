@@ -1,5 +1,5 @@
 <template>
-  <MonacoEditor language="json" :code="code" :theme="options.theme" srcPath="" width="100%" height="100%" :options="monacoOptions" @mounted="onMounted">
+  <MonacoEditor language="json" :code="code" :theme="options.theme" srcPath="." width="100%" height="100%" :options="monacoOptions" @mounted="onMounted">
   </MonacoEditor>
 </template>
 
