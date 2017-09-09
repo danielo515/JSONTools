@@ -26,7 +26,7 @@
     </q-scroll-area>
 
     <div class="row panels" :style="computedMainStyle">
-      <div class="col-6">
+      <div id="leftPanel" class="col-6">
         <JsonInput></JsonInput>
       </div>
       <div class="col-6">
@@ -118,16 +118,16 @@ export default {
 </script>
 
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 @import '~variables'
   .q-toolbar
     a
       height 100%
       color white
   .panels
+    overflow hidden
+    #leftPanel
+      border-right 1px solid $primary
     .has-error
       border 1px dashed red
-    .CodeMirror
-      height 100%
-      width 100%
 </style>

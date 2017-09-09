@@ -5,14 +5,31 @@ var
   cssUtils = require('./css-utils'),
   env = require('./env-utils'),
   merge = require('webpack-merge'),
-  projectRoot = path.resolve(__dirname, '../'),
+  CopyWebpackPlugin = require('copy-webpack-plugin')
+projectRoot = path.resolve(__dirname, '../'),
   ProgressBarPlugin = require('progress-bar-webpack-plugin'),
   useCssSourceMap =
-    (env.dev && config.dev.cssSourceMap) ||
-    (env.prod && config.build.productionSourceMap)
+  (env.dev && config.dev.cssSourceMap) ||
+  (env.prod && config.build.productionSourceMap)
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
+}
+
+function excludeNodeModulesExcept(modules) {
+  var pathSep = path.sep;
+  if (pathSep == '\\') // must be quoted for use in a regexp:
+    pathSep = '\\\\';
+  var moduleRegExps = modules.map(function (modName) {return new RegExp("node_modules" + pathSep + modName)})
+
+  return function (modulePath) {
+    if (/node_modules/.test(modulePath)) {
+      for (var i = 0; i < moduleRegExps.length; i++)
+        if (moduleRegExps[i].test(modulePath)) return false;
+      return true;
+    }
+    return false;
+  };
 }
 
 module.exports = {
@@ -49,7 +66,7 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: projectRoot,
-        exclude: /node_modules/
+        exclude: excludeNodeModulesExcept(['vue-monaco-editor'])
       },
       {
         test: /\.vue$/,
@@ -104,6 +121,18 @@ module.exports = {
         postcss: cssUtils.postcss
       }
     }),
+    // copy custom static assets
+    new CopyWebpackPlugin(
+      [{
+        debug: 'debug',
+        from: 'node_modules/monaco-editor/min/vs',
+        to: 'vs',
+        ignore: [
+          '**/language/typescript/**',
+          'language/html/*',
+          'language/css/*'
+        ]
+      }]),
     new ProgressBarPlugin({
       format: config.progressFormat
     })

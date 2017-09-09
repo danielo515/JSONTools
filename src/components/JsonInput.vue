@@ -1,19 +1,15 @@
 <template>
   <div class="jsonInput" :class="error ? 'has-error' : ''">
     <div class="error-message" v-if="error" v-html="formatError(errorMessage)"></div>
-    <codemirror @blur="blur" :options="editorOptions" :code="area"></codemirror>
+    <Editor language="json" :code="inputText" theme="vs" srcPath="" width="100%" height="100%" :blur="blur" :options="monacoOptions">
+    </Editor>
   </div>
 </template>
 
 <script>
-// foldGutter
-require('codemirror/addon/fold/foldgutter.css')
-require('codemirror/addon/fold/brace-fold.js')
-require('codemirror/addon/fold/foldgutter.js')
-// require('codemirror/addon/fold/indent-fold.js')
 
 import { jsonParse } from '../utils';
-import { codemirror } from 'vue-codemirror'
+import Editor from '@/Editor';
 
 const asyncParse = (str) => {
   return new Promise((resolve, reject) => {
@@ -27,42 +23,29 @@ const asyncParse = (str) => {
 
 export default {
   components: {
-    codemirror
-    // QField
+    Editor
   },
   data () {
     return {
-      /* area: '{Hello:"Objects go here"}', */
       error: false,
       errorMessage: '',
-      editorOptions: {
-        // codemirror options
-        tabSize: 2,
-        matchBrackets: true,
-        lineNumbers: true,
-        foldGutter: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-        line: true,
-        undoDepth: 100,
-        dragDrop: false,
-        pollInterval: 200,
-        mode: {
-          name: 'javascript',
-          json: true
-        },
-        lineWrapping: true
+      monacoOptions: {
+        folding: true,
+        readOnly: false,
+        overviewRulerBorder: false,
+        theme: 'vs-dark'
       }
     }
   },
   computed: {
-    area () {
+    inputText () {
       if (this.$store.state.config.automaticFormat) return this.$store.getters.inputText
       return null;
     }
   },
   methods: {
-    blur (evt) {
-      this.parse(evt.doc.getValue())
+    blur (text) {
+      this.parse(text)
     },
     formatError: (str) =>
       str.startsWith('Unexpected') ? str.replace(/(Unexpected token )(.)/, '$1"<span style="color:red">$2</span>"') : str,

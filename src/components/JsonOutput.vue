@@ -1,30 +1,21 @@
 <template>
-      <codemirror :code="output" :options="editorOptions"></codemirror>
+  <Editor :code="output" :options="editorOptions">
+  </Editor>
 </template>
 
 <script>
-import {
-  QScrollArea
-} from 'quasar'
-
-import { codemirror } from 'vue-codemirror'
+import Editor from '@/Editor';
 
 export default {
   components: {
-    QScrollArea,
-    codemirror
+    Editor
   },
   computed: {
-    output() { return this.$store.state.jsonOutput }
+    output () { return this.$store.state.jsonOutput }
   },
   data () {
     return {
       editorOptions: {
-        // codemirror options
-        tabSize: 2,
-        lineNumbers: true,
-        line: true,
-        theme: 'paraiso-light',
         readOnly: true
       }
     }
@@ -33,4 +24,5 @@ export default {
 </script>
 
 <style>
+
 </style>
