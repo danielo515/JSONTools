@@ -1,5 +1,5 @@
 import getKeysMap from './getKeysMap';
-import toNumber from 'lodash/tonumber';
+import toNumber from 'lodash/toNumber';
 
 export function uniques(val, i, arr) {
   return arr.indexOf(val) === i
