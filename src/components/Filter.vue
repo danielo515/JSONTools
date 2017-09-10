@@ -22,7 +22,7 @@ import {
 } from 'quasar'
 
 import { mapState } from 'vuex'
-import Get from 'lodash.get';
+import Get from 'lodash/get';
 import { uniques } from 'utils';
 
 const AND = 'and';
