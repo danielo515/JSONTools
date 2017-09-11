@@ -1,12 +1,6 @@
 <template>
   <div>
-    <q-select
-      v-model="select"
-      float-label="Keys to include"
-      multiple
-      chips
-     :options="keys"
-    />
+    <q-select v-model="select" float-label="Keys to include" multiple chips :options="keys" />
     <q-btn icon="create" @click="extract">Extract fields</q-btn>
   </div>
 </template>
@@ -19,7 +13,8 @@ import {
 } from 'quasar'
 
 import { mapState } from 'vuex'
-import Pick from 'lodash.pick'
+import Get from 'lodash/get';
+import set from 'lodash/set';
 
 export default {
   components: {
@@ -32,8 +27,8 @@ export default {
     input: state => state.jsonInput
   }),
   methods: {
-    extract() {
-      const result = this.input.map(o => Pick(o, this.select));
+    extract () {
+      const result = this.input.map(o => this.select.reduce((res, path) => set(res, path, Get(o, path)), {}));
       this.$store.dispatch('setJsonOutput', result)
     }
   },
@@ -46,4 +41,5 @@ export default {
 </script>
 
 <style>
+
 </style>

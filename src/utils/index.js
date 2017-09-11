@@ -1,14 +1,12 @@
-import toNumber from 'lodash.tonumber';
-export function listKeys(obj) {
-  return Object.keys(obj);
-}
+import getKeysMap from './getKeysMap';
+import toNumber from 'lodash/toNumber';
 
 export function uniques(val, i, arr) {
   return arr.indexOf(val) === i
 }
 
 export function listAllKeys(objs) {
-  return objs.map(listKeys)
+  return objs.map((o) => getKeysMap(o))
     .reduce((all, curr) => all.concat(curr), [])
     .filter(uniques);
 }
@@ -44,7 +42,6 @@ export const summary = (...informants) => topic =>
 
 export const asProp = prop => value => ({[prop]: value});
 // general fp helpers
-export const map = fn => arr => arr.map(fn);
 export const get = (key, def) => col => col.hasOwnProperty(key) ? col[key] : def;
 export const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 
@@ -62,3 +59,4 @@ const makeArray = (str) => {
 const quoteWords = (str) => str.replace(/([^"])(\w+)\s*:/g, '$1"$2":')
 // Applies different fixers to a json string until it parses correctly or there are no more fixes
 export const jsonParse = fixIfFails((str) => JSON.parse(str), cleanMongoDataTypes, jsonQuotes, separateObjects, makeArray, quoteWords);
+export const map = fn => arr => arr.map(fn);
