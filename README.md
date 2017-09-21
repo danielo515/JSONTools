@@ -1,5 +1,7 @@
 # JSONTools
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/danielo515/JSONTools.svg)](https://greenkeeper.io/)
+
 > A small collection of utilities to operate collections of json objects
 
 ## Build Setup
